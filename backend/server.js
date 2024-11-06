@@ -1,8 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const User = require("./schema/userSchema")
-// Create the Express app
+const cors = require('cors');
 const app = express();
+// Use CORS middleware to allow requests from a specific origin
+app.use(cors({
+  origin: 'http://localhost:5173'  // replace with your frontend URL
+}));
+// Create the Express app
+
 
 emailRegex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/i;
 
@@ -21,7 +27,7 @@ app.get('/', (req, res) => {
 });
 // Form data
 app.post('/api/data' ,async (req , res)=> {
- let {name , email , rollno , animals , food , color , prefer1 , prefer2 } = req.body;
+ let {name , email ,  animal , food , color , prefer1 , prefer2 } = req.body;
    // Create a new user
    if(emailRegex.test(email)){
     console.log("email is valid")
@@ -29,12 +35,15 @@ app.post('/api/data' ,async (req , res)=> {
     console.log("email is invalid")
     return res.status(400).json({ message: 'Invalid email format' });
   }
+  const user = await User.findOne( {email : email})
+  if(user) {
+     res.status(500).json({ message: 'Email already exists' });
+  }
    try {
     const newUser = new User({
      name,
      email,
-     rollno,
-     animals,
+     animal,
      food,
      color,
      prefer1,
@@ -65,6 +74,7 @@ app.get('/api/users/:email', async (req, res) => {
    if (!user) {
      return res.status(404).json({ message: 'User not found' });
    }
+   
 
    // Find matching users
    const matchingUsers = await User.find({
@@ -74,24 +84,31 @@ app.get('/api/users/:email', async (req, res) => {
    // Calculate match scores
    const matches = matchingUsers.map((matchingUser) => {
      let score = 0;
+     let match = []
      if (matchingUser.animals == user.animals) {
        score += 1;
+       match.push(matchingUser.animals)
      }
      if (matchingUser.food == user.food) {
        score += 1;
+       match.push(matchingUser.food)
      }
      if (matchingUser.color == user.color) {
        score += 1;
+       match.push(matchingUser.color)
      }
      if (matchingUser.prefer1 == user.prefer1) {
        score += 1;
+       match.push(matchingUser.prefer1)
      }
      if (matchingUser.prefer2 == user.prefer2) {
        score += 1;
+      match.push(matchingUser.prefer2)
      }
      return {
        user: matchingUser,
-       score
+       score ,
+       match
      }
    });
 

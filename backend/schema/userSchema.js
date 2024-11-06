@@ -6,16 +6,16 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  rollno : {
-    type : String,
-    required : true
-  },
+  // rollno : {
+  //   type : String,
+  //   required : true
+  // },
   email: {
     type: String,
     required: true,
     unique: true
   },
-  animals: {
+  animal: {
     type: String,
     required: true
   },
