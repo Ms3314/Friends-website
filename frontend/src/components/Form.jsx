@@ -28,7 +28,7 @@ function Form() {
   };
 
   return (
-    <div className="flex justify-center bg-yellow-200 h-screen items-center">
+    <div className="p-10 flex justify-center bg-yellow-200 h-full items-center">
       <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-[400px] p-7 rounded-lg bg-blue-300 justify-center items-center">
         
         <input type="text" name="username" className="rounded-xl w-[70%] py-2 pl-4" placeholder="username" required />
@@ -55,7 +55,7 @@ function Form() {
           <option value="Chocolate">Chocolate</option>
         </select>
         
-        <label htmlFor="color" className="text-xl text-slate-700 font-bold">What do you prefer More 😀?</label>
+        <label htmlFor="color" className="text-xl text-slate-700 font-bold">What color do you prefer 😀?</label>
         <select name="color" required className="rounded-xl w-[70%] py-2 pl-4">
           <option value="" disabled selected>Choose your option</option>
           <option value="Blue">Blue</option>
