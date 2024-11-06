@@ -4,6 +4,8 @@ const User = require("./schema/userSchema")
 // Create the Express app
 const app = express();
 
+emailRegex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/i;
+
 // Connect to MongoDB
 const mongoURI = 'mongodb://localhost:27017/FriendsApp';
 mongoose.connect(mongoURI)
@@ -18,9 +20,15 @@ app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 // Form data
-app.post('/api/data' ,async ()=> {
+app.post('/api/data' ,async (req , res)=> {
  let {name , email , rollno , animals , food , color , prefer1 , prefer2 } = req.body;
    // Create a new user
+   if(emailRegex.test(email)){
+    console.log("email is valid")
+  }else{
+    console.log("email is invalid")
+    return res.status(400).json({ message: 'Invalid email format' });
+  }
    try {
     const newUser = new User({
      name,
@@ -44,7 +52,14 @@ app.post('/api/data' ,async ()=> {
 app.get('/api/users/:email', async (req, res) => {
  try {
    const { email } = req.params;
-
+  if(emailRegex.test(email)){
+    console.log(emailRegex.test(email))
+    console.log("email is valid")
+  }else{
+    console.log(emailRegex.test(email))
+    console.log("email is invalid")
+    return res.status(400).json({ message: 'Invalid email format' });
+  }
    // Find the user
    const user = await User.findOne({ email });
    if (!user) {
@@ -54,22 +69,30 @@ app.get('/api/users/:email', async (req, res) => {
    // Find matching users
    const matchingUsers = await User.find({
      email: { $ne: email },
-     animals: { $in: user.animals },
-     food: { $in: user.food },
-     color: { $in: user.color },
-     prefer1: { $in: [user.prefer1, user.prefer2] },
-     prefer2: { $in: [user.prefer1, user.prefer2] }
    }).exec();
 
    // Calculate match scores
    const matches = matchingUsers.map((matchingUser) => {
      let score = 0;
-     if (matchingUser.animals.some(item => user.animals.includes(item))) score += 10;
-     if (matchingUser.food.some(item => user.food.includes(item))) score += 10;
-     if (matchingUser.color.some(item => user.color.includes(item))) score += 10;
-     if (matchingUser.prefer1.some(item => user.prefer1.includes(item))) score += 10;
-     if (matchingUser.prefer2.some(item => user.prefer2.includes(item))) score += 10;
-     return { user: matchingUser, score };
+     if (matchingUser.animals == user.animals) {
+       score += 1;
+     }
+     if (matchingUser.food == user.food) {
+       score += 1;
+     }
+     if (matchingUser.color == user.color) {
+       score += 1;
+     }
+     if (matchingUser.prefer1 == user.prefer1) {
+       score += 1;
+     }
+     if (matchingUser.prefer2 == user.prefer2) {
+       score += 1;
+     }
+     return {
+       user: matchingUser,
+       score
+     }
    });
 
    // Sort matches by score in descending order
