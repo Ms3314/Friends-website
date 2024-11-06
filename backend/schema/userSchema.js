@@ -1,44 +1,39 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-// Animals (Cats / Dogs)
-// Food (Biriyani / Haleem)
-// Color (black / blue)
-// Prefer (Ice-cream / Paestry)
-// Prefer (Chciken / Mutton)
 
 const userSchema = new Schema({
   name: {
     type: String,
     required: true
   },
+  // rollno : {
+  //   type : String,
+  //   required : true
+  // },
   email: {
     type: String,
     required: true,
     unique: true
   },
-  rollno: {
+  animal: {
     type: String,
     required: true
   },
-  animals:{
-   type : String,
-   required : true 
-  },
   food: {
-    type : String,
-    required : true,
+    type: String,
+    required: true
   },
-  color : {
-    type : String,
-    required : true,
+  color: {
+    type: String,
+    required: true
   },
-  prefer1 : {
-    type : String ,
-    required : true,
+  prefer1: {
+    type: String,
+    required: true
   },
-  prefer2 : {
-    type : String ,
-    required : true,
+  prefer2: {
+    type: String,
+    required: true
   },
   createdAt: {
     type: Date,
