@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+
+const server =  import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
+
+
 function Match({ form }) {
   const [similiar, setSimiliar] = useState([]);
   const email = form.email;
-  
-  useEffect(() => {
-    // Ensure email is available before making the request
+  const handleRefresh = () => {
     if (email) {
-      axios.get(`http://localhost:5000/api/users/${email}`)
+      axios.get(`${server}/api/users/${email}`)
         .then((response) => {
           console.log(response.data.matches);
           setSimiliar(response.data.matches);
@@ -17,20 +19,13 @@ function Match({ form }) {
           console.error(error);
         });
     }
-  }, [email]); // Dependency array ensures this runs only when `email` changes
+  }
+  useEffect(() => {
+    // Ensure email is available before making the request
+    handleRefresh()
+  }, []); //
 
-  const handleRefresh = () => {
-      if (email) {
-        axios.get(`http://localhost:5000/api/users/${email}`)
-          .then((response) => {
-            console.log(response.data.matches);
-            setSimiliar(response.data.matches);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }
-    }
+  
   
 
   return (
