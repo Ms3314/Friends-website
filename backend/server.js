@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const User = require("./schema/userSchema")
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
 // Use CORS middleware to allow requests from a specific origin
 app.use(cors({
-  origin: 'http://localhost:5173'  // replace with your frontend URL
+  origin: 'https://friends-website.onrender.com'  // replace with your frontend URL
 }));
 // Create the Express app
 
@@ -13,7 +14,7 @@ app.use(cors({
 emailRegex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/i;
 
 // Connect to MongoDB
-const mongoURI = 'mongodb://localhost:27017/FriendsApp';
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/FriendsApp';
 mongoose.connect(mongoURI)
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.log(err));
