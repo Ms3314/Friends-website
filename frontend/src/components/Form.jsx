@@ -1,4 +1,5 @@
 import axios from "axios"
+const server =  import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
 
 function Form() {
   const handleSubmit = (e) => {
@@ -15,7 +16,7 @@ function Form() {
       prefer2: e.target.superpower.value,
     };
 
-    axios.post("http://localhost:5000/api/data", formData)
+    axios.post(`${server}/api/data`, formData)
     .then(()=>{
       alert("Lesse meet your new friends !!")
       localStorage.setItem("form" , JSON.stringify(formData))
