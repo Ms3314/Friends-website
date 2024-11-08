@@ -29,7 +29,7 @@ function Form() {
   };
 
   return (
-    <div className="p-10 flex flex-col justify-center bg-yellow-200 h-full items-center">
+    <div className="p-10 flex flex-col justify-center w-full bg-yellow-200 h-full items-center">
       <h1 className="font-mono text-pretty text-3xl font-extrabold bg-green-200 px-2 py-2  mb-10">Fraaands Game 🤍</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-[400px] p-7 rounded-lg bg-blue-300 justify-center items-center">
         
