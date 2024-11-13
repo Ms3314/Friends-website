@@ -5,11 +5,13 @@ const cors = require('cors');
 const app = express();
 require('dotenv').config();
 // Use CORS middleware to allow requests from a specific origin
-app.use(cors({
-  origin: 'https://friends-website.onrender.com', // Allow only your frontend domain
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-}));
+// app.use(cors({
+//   origin: 'https://friends-website.onrender.com', // Allow only your frontend domain
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+//   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+// }));
+
+app.use(cors())
 // Create the Express app
 // shit 
 
@@ -62,6 +64,27 @@ app.post('/api/data', async (req, res) => {
     res.status(200).json({ user: newUser });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// delete the email wala user 
+// DELETE route to remove a user by email
+app.delete('/api/users/delete/:email', async (req, res) => {
+  const { email } = req.params;
+  console.log("Delete has been pressed for email:", email);
+
+  try {
+    const result = await User.findOneAndDelete({ email });
+
+    if (!result) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    console.log("SUCCESS: User deleted");
+    res.status(200).json({ message: `User with email ${email} has been deleted` });
+  } catch (err) {
+    console.error("Error while deleting user:", err);
+    res.status(500).json({ message: 'Error deleting user', error: err });
   }
 });
 
