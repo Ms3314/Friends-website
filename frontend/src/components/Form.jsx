@@ -32,7 +32,7 @@ function Form() {
       
     })
     .catch(()=>{
-      toast.success("Something went wrong , please try using another email")
+      toast.error("Something went wrong , please try using another email")
     })
 
   };

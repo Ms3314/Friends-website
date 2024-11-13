@@ -5,7 +5,11 @@ const cors = require('cors');
 const app = express();
 require('dotenv').config();
 // Use CORS middleware to allow requests from a specific origin
-app.use(cors());
+app.use(cors({
+  origin: 'https://friends-website.onrender.com', // Allow only your frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+}));
 // Create the Express app
 
 
