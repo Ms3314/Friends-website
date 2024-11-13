@@ -12,7 +12,8 @@ function Match({ form }) {
     if (email) {
       axios.get(`${server}/api/users/${email}`)
         .then((response) => {
-          console.log(response.data.matches);
+          console.log(response.data)
+          console.log("this is the matches , " , response.data.matches);
           setSimiliar(response.data.matches);
         })
         .catch((error) => {
@@ -59,6 +60,15 @@ const Card = ({ data }) => {
         ))
       } 
       </div>
+      {/* <div className="mt-2 flex gap-3 flex-wrap ">
+      {
+        choice.map((sa)=> {
+          <p>Choice : {}</p>
+        })
+      
+      }
+      </div> */}
+
     </div>
   );
 };
