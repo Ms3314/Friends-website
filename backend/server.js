@@ -6,7 +6,7 @@ const app = express();
 require('dotenv').config();
 // Use CORS middleware to allow requests from a specific origin
 app.use(cors({
-  origin: 'https://friends-website.onrender.com', // Allow only your frontend domain
+  origin: `${process.env.FRONTEND_URL}`, // Allow only your frontend domain
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 }));
@@ -32,11 +32,9 @@ app.get('/', (req, res) => {
 app.post('/api/data', async (req, res) => {
   let { name, email, animal, food, drink, desserts, football, anime, superpower } = req.body;
   
-  // Create a new user
-  console.log(req.body);
   
   if (emailRegex.test(email)) {
-    console.log("email is valid");
+    // console.log("email is valid");
   } else {
     console.log("email is invalid");
     return res.status(400).json({ message: 'Invalid email format' });
@@ -148,5 +146,5 @@ app.get('/api/users/:email', async (req, res) => {
 
 
 // Start the server
-const PORT = process.env.PORT || 5000;
+const PORT =  5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

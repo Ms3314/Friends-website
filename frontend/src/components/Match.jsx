@@ -31,7 +31,13 @@ function Match({ form }) {
 
   return (
     <div className=" flex gap-5 flex-col items-center h-screen">
-      <button className="mt-5 border-2 border-slate-600 text-sm font-bold  bg-blue-300 p-3 rounded-full text-slate-600" onClick={handleRefresh}>Refresh (lonely button)</button>
+      <div className="flex gap-5">
+        <button className="mt-5 border-2 border-slate-600 text-sm font-bold  bg-blue-300 p-3 rounded-full text-slate-600" onClick={handleRefresh}>Refresh (lonely button)</button>
+        <button className="mt-5 border-2 border-slate-600 text-sm font-bold  bg-yellow-300 p-3 rounded-full text-slate-600" onClick={()=>{
+          localStorage.removeItem("form");
+          window.location.reload()
+        }}>Try Again</button>
+      </div>
       <h1 className="text-3xl font-bold text-center ">Your New Friends 🪽👋</h1>
       {similiar.map((data, key) => (
         <>
