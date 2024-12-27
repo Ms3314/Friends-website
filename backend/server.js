@@ -18,7 +18,6 @@ emailRegex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/i;
 // Connect to MongoDB
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/FriendsApp';
 mongoose.connect(mongoURI)
-.then(() => console.log('MongoDB connected'))
 .catch(err => console.log(err));
 
 // Middleware
@@ -33,10 +32,7 @@ app.post('/api/data', async (req, res) => {
   let { name, email, animal, food, drink, desserts, football, anime, superpower } = req.body;
   
   
-  if (emailRegex.test(email)) {
-    // console.log("email is valid");
-  } else {
-    console.log("email is invalid");
+  if (!emailRegex.test(email)) {
     return res.status(400).json({ message: 'Invalid email format' });
   }
 
@@ -54,7 +50,6 @@ app.post('/api/data', async (req, res) => {
     });
     
     // Save the user to the database
-    console.log("this is the data we got ", newUser);
     await newUser.save();
     
     res.status(200).json({ user: newUser });
@@ -68,14 +63,7 @@ app.post('/api/data', async (req, res) => {
 app.get('/api/users/:email', async (req, res) => {
  try {
    const { email } = req.params;
-   console.log("hellooooooooo")
-   console.log("the email i got is ",email)
-  if(emailRegex.test(email)){
-    console.log(emailRegex.test(email))
-    console.log("email is valid")
-  }else{
-    console.log(emailRegex.test(email))
-    console.log("email is invalid")
+  if(!emailRegex.test(email)){
     return res.status(400).json({ message: 'Invalid email format' });
   }
    // Find the user
@@ -93,34 +81,10 @@ app.get('/api/users/:email', async (req, res) => {
    const matches = matchingUsers.map((matchingUser) => {
      let score = 0;
      let match = []
-     console.log("this is the specific user:: ",matchingUser)
-    //  if (matchingUser.choice.includes() == user.animals) {
-    //    score += 1;
-    //    match.push(matchingUser.animals)
-    //  }
-    //  if (matchingUser.food == user.food) {
-    //    score += 1;
-    //    match.push(matchingUser.food)
-    //  }
-    //  if (matchingUser.color == user.color) {
-    //    score += 1;
-    //    match.push(matchingUser.color)
-    //  }
-    //  if (matchingUser.prefer1 == user.prefer1) {
-    //    score += 1;
-    //    match.push(matchingUser.prefer1)
-    //  }
-    //  if (matchingUser.prefer2 == user.prefer2) {
-    //    score += 1;
-    //   match.push(matchingUser.prefer2)
-    //  }
     for (let i = 0  ; i < matchingUser.choice.length ; i ++ ) {
       const isMatch = matchingUser.choice[i] == user.choice[i]
-      console.log("does this match :",isMatch)
       if (matchingUser.choice[i] == user.choice[i])
         {
-          console.log("matching user",matchingUser.choice[i])
-          console.log("this is me ",user.choice[i])
           score += 1;
           if (score > 0 ) {
           match.push(matchingUser.choice[i])
@@ -137,7 +101,6 @@ app.get('/api/users/:email', async (req, res) => {
    // Sort matches by score in descending order
    matches.sort((a, b) => b.score - a.score);
    matches.slice(0, 5);
-   console.log({ user, matches });
    res.json({ user, matches });
  } catch (error) {
    res.status(500).json({ message: error.message });

@@ -12,8 +12,6 @@ function Match({ form }) {
     if (email) {
       axios.get(`${server}/api/users/${email}`)
         .then((response) => {
-          console.log(response.data)
-          console.log("this is the matches , " , response.data.matches);
           setSimiliar(response.data.matches);
         })
         .catch((error) => {
