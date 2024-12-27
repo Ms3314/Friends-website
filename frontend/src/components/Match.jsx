@@ -12,8 +12,6 @@ function Match({ form }) {
     if (email) {
       axios.get(`${server}/api/users/${email}`)
         .then((response) => {
-          console.log(response.data)
-          console.log("this is the matches , " , response.data.matches);
           setSimiliar(response.data.matches);
         })
         .catch((error) => {
@@ -31,7 +29,13 @@ function Match({ form }) {
 
   return (
     <div className=" flex gap-5 flex-col items-center h-screen">
-      <button className="mt-5 border-2 border-slate-600 text-sm font-bold  bg-blue-300 p-3 rounded-full text-slate-600" onClick={handleRefresh}>Refresh (lonely button)</button>
+      <div className="flex gap-5">
+        <button className="mt-5 border-2 border-slate-600 text-sm font-bold  bg-blue-300 p-3 rounded-full text-slate-600" onClick={handleRefresh}>Refresh (lonely button)</button>
+        <button className="mt-5 border-2 border-slate-600 text-sm font-bold  bg-yellow-300 p-3 rounded-full text-slate-600" onClick={()=>{
+          localStorage.removeItem("form");
+          window.location.reload()
+        }}>Try Again</button>
+      </div>
       <h1 className="text-3xl font-bold text-center ">Your New Friends 🪽👋</h1>
       {similiar.map((data, key) => (
         <>
@@ -50,7 +54,7 @@ function Match({ form }) {
 const Card = ({ data }) => {
   let {user:{name} , score , match} = data
   return (
-    <div className="bg-green-300 rounded  w-[400px] p-4">
+    <div className="bg-green-300 rounded  w-[270px] p-4">
       <p>Name: {name}</p>  
       <p>Similiar choices :</p>
       <div className="mt-2 flex gap-3 flex-wrap ">
