@@ -50,7 +50,7 @@ function Match({ form }) {
 const Card = ({ data }) => {
   let {user:{name} , score , match} = data
   return (
-    <div className="bg-green-300 rounded  w-[400px] p-4">
+    <div className="bg-green-300 rounded  w-[270px] p-4">
       <p>Name: {name}</p>  
       <p>Similiar choices :</p>
       <div className="mt-2 flex gap-3 flex-wrap ">
