@@ -4,7 +4,6 @@ const server =  import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
 import {toast , Toaster} from "react-hot-toast";
 
 function Form() {
-  const [formData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   
   const handleSubmit = (e) => {
@@ -27,7 +26,6 @@ function Form() {
     axios.post(`${server}/api/data`, data)
     .then(()=>{
       toast.success("Let's meet your new friends !!")
-      setFormData(data)
       localStorage.setItem("form" , JSON.stringify(data))
       setTimeout(() => {
         window.location.reload()

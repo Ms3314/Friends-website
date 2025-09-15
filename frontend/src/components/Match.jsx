@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import PropTypes from 'prop-types';
 
 const server =  import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
 
 function Match({ form }) {
   const [similiar, setSimiliar] = useState([]);
   const [loading, setLoading] = useState(true);
-  const email = form.email;
+  const email = form?.email;
   
-  const handleRefresh = () => {
+  const handleRefresh = useCallback(() => {
     if (email) {
       setLoading(true);
       axios.get(`${server}/api/users/${email}`)
@@ -21,11 +22,11 @@ function Match({ form }) {
           setLoading(false);
         });
     }
-  }
+  }, [email]);
   
   useEffect(() => {
     handleRefresh()
-  }, []); 
+  }, [handleRefresh]); 
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-400 via-purple-300 to-pink-300 p-6">
@@ -74,7 +75,7 @@ function Match({ form }) {
             <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center">
               <h2 className="text-2xl font-bold text-white mb-4">🔍 No Close Matches Found</h2>
               <p className="text-white/80 mb-6">
-                Don't worry! Try refreshing or invite more friends to join the platform.
+                Don&apos;t worry! Try refreshing or invite more friends to join the platform.
               </p>
             </div>
           ) : (
@@ -146,6 +147,23 @@ const FriendCard = ({ data }) => {
       </div>
     </div>
   );
+};
+
+Match.propTypes = {
+  form: PropTypes.shape({
+    email: PropTypes.string.isRequired,
+    name: PropTypes.string
+  }).isRequired
+};
+
+FriendCard.propTypes = {
+  data: PropTypes.shape({
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired
+    }).isRequired,
+    score: PropTypes.number.isRequired,
+    match: PropTypes.arrayOf(PropTypes.string).isRequired
+  }).isRequired
 };
 
 export default Match;
